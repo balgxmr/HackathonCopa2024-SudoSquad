@@ -1,0 +1,13 @@
+- name: Crear muchos archivos
+  hosts: localhost
+  tasks:
+    - name: Crea la carpeta test si no existe
+      ansible.builtin.file:
+        path: "./guias"
+        state: directory
+
+    - name: Crear 100 archivos
+      ansible.builtin.shell:
+        cmd: "touch guias/archivo-{{ item }}.txt"
+      loop: "{{ range(1, 100) }}"
+

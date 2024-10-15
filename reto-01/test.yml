@@ -1,0 +1,6 @@
+- name: test
+  hosts: localhost
+  tasks:
+    - name: Copiar versión exacta del sistema operativo
+      ansible.builtin.debug:
+        msg: "{{ ansible_distribution_release }}"

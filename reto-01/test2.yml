@@ -1,0 +1,11 @@
+- name: Corre comando basico uptime
+  hosts: localhost
+  tasks:
+    - name: Copiar versión exacta del sistema operativo
+      ansible.builtin.command:
+        cmd: uname -r
+      register: ver_sis_info
+    
+    - name: Imprime resultado de uptime, tarea anterior
+      ansible.builtin.shell:
+        cmd: "echo {{ ver_sis_info.stdout }} > /tmp/os-version.txt"

@@ -1,0 +1,8 @@
+# Punto No. 3
+- name: xd
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Estableciendo SELinux Permanente
+      ansible.builtin.shell:
+        cmd: "echo 'SELINUX=enforcing' > /etc/selinux/config"

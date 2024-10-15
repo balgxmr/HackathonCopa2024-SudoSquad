@@ -1,0 +1,68 @@
+- name: Realiza comandos del punto 5-X
+  hosts: all
+  become: true
+  tasks:
+    # Punto No. 1
+    # "apt-get update"
+    - name: Apt-get update
+      ansible.builtin.apt:
+        update-cache: true
+
+    # Punto No. 2
+    - name: Instalar ultima version de samba y samba-client
+      ansible.builtin.package:
+        name:
+          - samba
+          - samba-client
+        state: latest
+
+    # Punto No. 3
+    - name: Estableciendo SELinux Permanente
+      ansible.builtin.shell:
+        cmd: "echo 'SELINUX=enforcing' > /etc/selinux/config"
+
+    # Punto No. 4
+    #
+
+    # Punto No. 5
+    - name: Crea la carpeta test si no existe
+      ansible.builtin.file:
+        path: "./guias"
+        state: directory
+
+    - name: Crear 100 archivos
+      ansible.builtin.shell:
+        cmd: "touch guias/archivo-{{ item }}.txt"
+      loop: "{{ range(1, 100) }}"
+
+    # Punto No. 6
+    - name: Crear subcarpeta guia
+      ansible.builtin.file:
+        path: "./guias/config"
+        state: directory
+
+    - name: Copiar archivos a guias/config/
+      ansible.builtin.shell:
+        cmd: "cp /etc/redhat-release ./guias/config/"
+        cmd: "cp /etc/passwd ./guias/config/"
+        cmd: "cp /usr/share/dict/linux.words ./guias/config/"
+
+    # Punto No. 7
+    - name: Copiar versión exacta del sistema operativo
+      ansible.builtin.command:
+        cmd: uname -r
+      register: ver_sis_info
+
+    - name: Imprime resultado de uptime, tarea anterior
+      ansible.builtin.shell:
+        cmd: "echo {{ ver_sis_info.stdout }} > /tmp/os-version.txt"
+
+    # Punto No. 8
+    - name: Crear symlink de /guias/config/grupos a /etc/group
+      ansible.builtin.shell:
+        cmd: "ln -sf /guias/config/grupos /etc/group"
+
+    # Punto No. 9
+    - name: Mensaje de no problema
+      ansible.builtin.shell:
+        cmd: "echo 'El problema no es problema' > /etc/motd.d/Mensaje.motd"
